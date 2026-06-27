@@ -1,8 +1,0 @@
-python3 create_cross_validation_3folds_with_batch.py
-sh submit_validation_3folds_with_batch.sh
-python3 performance_validation_3folds_with_batch.py > log_performance_validation_3folds_with_batch.txt 2>&1
-
-python3 create_retrain_test_3folds_with_batch.py
-sh submit_retrain_test_3folds_with_batch.sh
-
-python3 final_results_3folds_with_batch.py > log_final_results_3folds_with_batch.txt 2>&1
