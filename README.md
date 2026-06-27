@@ -1,4 +1,4 @@
-# Deep Tangency Portfolio
+# Deep Tangency Portfolio (DTP)
 
 This repository contains the replication code for Feng, Jiang, Li, Song, and Wang,  
 **Deep Tangency Portfolio**.
@@ -14,12 +14,24 @@ The main replication directory is `MS_replication/`. All paths below are relativ
 - Make sure the full processed input files and precomputed model-output folders are placed in the expected paths under `./data/` and `./code/results_*/`.
 - Run the script: `sh submit_whole.sh`.
 - The script runs `./code/final_results_with_batch.py` and writes the generated tables and figures to `./output/`.
-- The authors ran the final result-generation code using Python 3.6.13, PyTorch 1.10.2, and parallel computation on a server with 96 Intel(R) Xeon(R) Gold 6230 @ 2.10GHz CPUs and 314 GB of RAM. The final table/figure generation takes approximately **1.8 minutes**.
+- The authors ran the final result-generation code using Python 3.6.13, PyTorch 1.10.2, and parallel computation on a server with 96 Intel(R) Xeon(R) Gold 6230 @ 2.10GHz CPUs and 314 GB of RAM. The final table/figure generation takes approximately **30 seconds**.
 
 ### 2. For Windows/Mac Users
 - Set the working directory to `./MS_replication/code/`.
 - Run `python3 final_results_with_batch.py`.
 - The output files will be written to `./MS_replication/output/`.
+- The authors tested all these results using Python in version 3.11.3 and with the following packages in specific versions:
+  - `pandas` == 1.5.3
+  - `numpy` == 1.24.3
+  - `scipy` == 1.10.1
+  - `statsmodels` == 0.13.5
+  - `matplotlib` == 3.11.0
+  - `pyarrow` == 11.0.0
+  - `seaborn` == 0.12.2
+  - `torch` == 2.0.1
+    
+  In total, the programs took about 1.8 minutes to get all the Tables and Figures.
+
 
 ### 3. Generated Tables and Figures
 - **Table 1**: `Table_1_panelA.csv`, `Table_1_panelB.csv`, and `Table_1_panelC.csv`
@@ -34,14 +46,7 @@ The main replication directory is `MS_replication/`. All paths below are relativ
 ### 4. Software
 The authors also tested the final result-generation scripts using Python 3.11.3 with the following package versions:
 
-- `pandas` 1.5.3
-- `numpy` 1.24.3
-- `scipy` 1.10.1
-- `statsmodels` 0.13.5
-- `matplotlib` 3.11.0
-- `pyarrow` 11.0.0
-- `seaborn` 0.12.2
-- `torch` 2.0.1
+
 
 ---
 
