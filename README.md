@@ -71,7 +71,9 @@ Equity and option characteristics are included in the processed merged character
 - `./MS_replication/data/ipca_final/`
 - `./MS_replication/data/rppca_final/`
 
-If using this GitHub repository without the complete replication-package files, please place the large processed characteristic panels and precomputed training outputs in the corresponding paths before running the scripts. In particular, `final_results_with_batch.py` expects the processed `.feather` characteristic files under `./MS_replication/data/data_in_all_final/` and the precomputed `results_*` folders under `./MS_replication/code/`.
+If using this GitHub repository without the complete replication-package files, please place the large processed characteristic panels and precomputed training outputs in the corresponding paths before running the scripts (because the data is large, you can find the files [here](https://www.dropbox.com/scl/fo/hi0kfki16dog5e6fjl2g1/AGOdKNlX_f1hzUQTsFV85Pg?rlkey=ketnw0yrpmunqgtfl88rrrwxd&st=xvj8ymwb&dl=0)). 
+
+In particular, `final_results_with_batch.py` expects the processed `.feather` characteristic files under `./MS_replication/data/data_in_all_final/` and the precomputed `results_*` folders under `./MS_replication/code/`.
 
 ---
 
