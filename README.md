@@ -43,11 +43,6 @@ The main replication directory is `MS_replication/`. All paths below are relativ
 - **Figure 3**: `Figure_3.pdf`
 - **Figure 4**: `Figure_4.pdf`
 
-### 4. Software
-The authors also tested the final result-generation scripts using Python 3.11.3 with the following package versions:
-
-
-
 ---
 
 ## Data Availability and Provenance
