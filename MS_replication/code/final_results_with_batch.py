@@ -138,82 +138,82 @@ def TP2(df_return, lam):
     return w_1
 
 
-#######################################
-##### Table 1: Summary Statistics #####
-#######################################
+# #######################################
+# ##### Table 1: Summary Statistics #####
+# #######################################
 
-start = time.time()
+# start = time.time()
 
-df_charactecristic_impute = pd.read_feather(f'../data/data_in_all_{update_date}/characteristics_raw_selected{panel_num}_with_Equity_{update_date}_xret.feather').set_index('trd_exctn_dt').loc[:oos_end]
+# df_charactecristic_impute = pd.read_feather(f'../data/data_in_all_{update_date}/characteristics_raw_selected{panel_num}_with_Equity_{update_date}_xret.feather').set_index('trd_exctn_dt').loc[:oos_end]
 
-df_charactecristic_impute = df_charactecristic_impute.merge(df_rf_all,left_on='trd_exctn_dt',right_index=True,how='left')
+# df_charactecristic_impute = df_charactecristic_impute.merge(df_rf_all,left_on='trd_exctn_dt',right_index=True,how='left')
 
-df_charactecristic_impute['ExRet'] = df_charactecristic_impute['excess_ret']
-df_charactecristic_impute['log_size'] = np.log(df_charactecristic_impute['size'])
-df_charactecristic_impute['Public'] = df_charactecristic_impute['permno']>0
-df_charactecristic_impute['IG'] = df_charactecristic_impute['rating']<=10
+# df_charactecristic_impute['ExRet'] = df_charactecristic_impute['excess_ret']
+# df_charactecristic_impute['log_size'] = np.log(df_charactecristic_impute['size'])
+# df_charactecristic_impute['Public'] = df_charactecristic_impute['permno']>0
+# df_charactecristic_impute['IG'] = df_charactecristic_impute['rating']<=10
 
-selected_stat = ['count','mean','std','50%']
-df_IG = df_charactecristic_impute[df_charactecristic_impute['IG']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
-df_NIG = df_charactecristic_impute[~df_charactecristic_impute['IG']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
-df_PUB = df_charactecristic_impute[df_charactecristic_impute['Public']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
-df_PRI = df_charactecristic_impute[~df_charactecristic_impute['Public']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
-df_ALL = df_charactecristic_impute[['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
+# selected_stat = ['count','mean','std','50%']
+# df_IG = df_charactecristic_impute[df_charactecristic_impute['IG']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
+# df_NIG = df_charactecristic_impute[~df_charactecristic_impute['IG']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
+# df_PUB = df_charactecristic_impute[df_charactecristic_impute['Public']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
+# df_PRI = df_charactecristic_impute[~df_charactecristic_impute['Public']][['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
+# df_ALL = df_charactecristic_impute[['monthly_return_winsorized','ExRet','rating','duration','age','size']].describe().loc[selected_stat].T
 
-pa_row = [x + item  for x in ['monthly_return_winsorized','ExRet','rating','duration','age','size'] for item in [' mean',' std',' median']]
-pa_row = ['Bond-month observations']+pa_row
-df_table1_pa =pd.DataFrame(index = pa_row, columns = ['ALL','IG','NIG','Public','Private']) 
+# pa_row = [x + item  for x in ['monthly_return_winsorized','ExRet','rating','duration','age','size'] for item in [' mean',' std',' median']]
+# pa_row = ['Bond-month observations']+pa_row
+# df_table1_pa =pd.DataFrame(index = pa_row, columns = ['ALL','IG','NIG','Public','Private']) 
 
-for i in range(5):
-    df_  = [df_ALL,df_IG,df_NIG,df_PUB,df_PRI][i]
-    count_value = df_.loc['monthly_return_winsorized']['count'].astype(int)
-    df_table1_pa.iloc[0,i] = f"{count_value:,}"
+# for i in range(5):
+#     df_  = [df_ALL,df_IG,df_NIG,df_PUB,df_PRI][i]
+#     count_value = df_.loc['monthly_return_winsorized']['count'].astype(int)
+#     df_table1_pa.iloc[0,i] = f"{count_value:,}"
 
-    for item in df_.index:
-        if item == 'ExRet':
-            df_table1_pa.loc[item+' mean'].iloc[i] = np.round((df_.loc[item,'mean'])*100,2)
-            df_table1_pa.loc[item+' std'].iloc[i] = np.round((df_.loc[item,'std'])*100,2)
-        elif item == 'size':
-            df_table1_pa.loc[item+' mean'].iloc[i] = np.round((df_.loc[item,'mean'])/1000, 0)
-            df_table1_pa.loc[item+' std'].iloc[i] = np.round((df_.loc[item,'std'])/1000, 0)
-        else:
-            df_table1_pa.loc[item+' mean'].iloc[i] = np.round((df_.loc[item,'mean']),2)
-            df_table1_pa.loc[item+' std'].iloc[i] = np.round((df_.loc[item,'std']),2)
+#     for item in df_.index:
+#         if item == 'ExRet':
+#             df_table1_pa.loc[item+' mean'].iloc[i] = np.round((df_.loc[item,'mean'])*100,2)
+#             df_table1_pa.loc[item+' std'].iloc[i] = np.round((df_.loc[item,'std'])*100,2)
+#         elif item == 'size':
+#             df_table1_pa.loc[item+' mean'].iloc[i] = np.round((df_.loc[item,'mean'])/1000, 0)
+#             df_table1_pa.loc[item+' std'].iloc[i] = np.round((df_.loc[item,'std'])/1000, 0)
+#         else:
+#             df_table1_pa.loc[item+' mean'].iloc[i] = np.round((df_.loc[item,'mean']),2)
+#             df_table1_pa.loc[item+' std'].iloc[i] = np.round((df_.loc[item,'std']),2)
 
-df_table1_pa.dropna().to_csv(f'../{final_output}/Table_1_panelA.csv', index=True, encoding='utf_8_sig')
+# df_table1_pa.dropna().to_csv(f'../{final_output}/Table_1_panelA.csv', index=True, encoding='utf_8_sig')
 
 
-df_charactecristic_impute['RRR'] = np.nan
-df_charactecristic_impute.loc[df_charactecristic_impute['rating'] == 1,'RRR'] = 'AAA'
-df_charactecristic_impute.loc[(df_charactecristic_impute['rating'] >1) & (df_charactecristic_impute['rating'] <=4),'RRR'] = 'AA'
-df_charactecristic_impute.loc[(df_charactecristic_impute['rating'] >4) & (df_charactecristic_impute['rating'] <=7),'RRR'] = 'A'
-df_charactecristic_impute.loc[(df_charactecristic_impute['rating'] >7) & (df_charactecristic_impute['rating'] <=10),'RRR'] = 'B'
-df_charactecristic_impute.loc[df_charactecristic_impute['rating'] >10,'RRR'] = 'Junk'
-df_charactecristic_impute['MMM'] = np.nan
-for i in range(10,1,-1):
+# df_charactecristic_impute['RRR'] = np.nan
+# df_charactecristic_impute.loc[df_charactecristic_impute['rating'] == 1,'RRR'] = 'AAA'
+# df_charactecristic_impute.loc[(df_charactecristic_impute['rating'] >1) & (df_charactecristic_impute['rating'] <=4),'RRR'] = 'AA'
+# df_charactecristic_impute.loc[(df_charactecristic_impute['rating'] >4) & (df_charactecristic_impute['rating'] <=7),'RRR'] = 'A'
+# df_charactecristic_impute.loc[(df_charactecristic_impute['rating'] >7) & (df_charactecristic_impute['rating'] <=10),'RRR'] = 'B'
+# df_charactecristic_impute.loc[df_charactecristic_impute['rating'] >10,'RRR'] = 'Junk'
+# df_charactecristic_impute['MMM'] = np.nan
+# for i in range(10,1,-1):
     
-    df_charactecristic_impute.loc[df_charactecristic_impute['time2maturity'] <=i,'MMM'] = i
-    if i==10:
-        df_charactecristic_impute.loc[df_charactecristic_impute['time2maturity'] >i,'MMM'] = 11
+#     df_charactecristic_impute.loc[df_charactecristic_impute['time2maturity'] <=i,'MMM'] = i
+#     if i==10:
+#         df_charactecristic_impute.loc[df_charactecristic_impute['time2maturity'] >i,'MMM'] = 11
 
-df_table1_pb = df_charactecristic_impute.groupby(['RRR','MMM']).count().reset_index().pivot(index='MMM', columns='RRR', values=['monthly_return'])
-df_table1_pb.columns = df_table1_pb.columns.droplevel(0)
-df_table1_pb = df_table1_pb/np.sum(np.sum(df_table1_pb))
-df_table1_pb['ALL_c'] = df_table1_pb.sum(axis=1)
-df_table1_pb.loc['ALL_r',:] = df_table1_pb.sum(axis=0)
-df_table1_pb = df_table1_pb[['AAA','AA','A','B','Junk','ALL_c']].round(4)*100
-df_table1_pb.to_csv(f'../{final_output}/Table_1_panelB.csv', index=True, encoding='utf_8_sig')
+# df_table1_pb = df_charactecristic_impute.groupby(['RRR','MMM']).count().reset_index().pivot(index='MMM', columns='RRR', values=['monthly_return'])
+# df_table1_pb.columns = df_table1_pb.columns.droplevel(0)
+# df_table1_pb = df_table1_pb/np.sum(np.sum(df_table1_pb))
+# df_table1_pb['ALL_c'] = df_table1_pb.sum(axis=1)
+# df_table1_pb.loc['ALL_r',:] = df_table1_pb.sum(axis=0)
+# df_table1_pb = df_table1_pb[['AAA','AA','A','B','Junk','ALL_c']].round(4)*100
+# df_table1_pb.to_csv(f'../{final_output}/Table_1_panelB.csv', index=True, encoding='utf_8_sig')
 
 
-df_table1_pc = df_charactecristic_impute.groupby(['RRR','Public']).count().reset_index().pivot(index='Public', columns='RRR', values=['monthly_return'])
-df_table1_pc = df_table1_pc/np.sum(np.sum(df_table1_pc))
-df_table1_pc.columns = df_table1_pc.columns.droplevel(0)
-df_table1_pc['ALL_c'] = df_table1_pc.sum(axis=1)
-df_table1_pc.loc['ALL_r',:] = df_table1_pc.sum(axis=0)
-df_table1_pc = df_table1_pc[['AAA','AA','A','B','Junk','ALL_c']].round(4)*100
-df_table1_pc.to_csv(f'../{final_output}/Table_1_panelC.csv', index=True, encoding='utf_8_sig')
+# df_table1_pc = df_charactecristic_impute.groupby(['RRR','Public']).count().reset_index().pivot(index='Public', columns='RRR', values=['monthly_return'])
+# df_table1_pc = df_table1_pc/np.sum(np.sum(df_table1_pc))
+# df_table1_pc.columns = df_table1_pc.columns.droplevel(0)
+# df_table1_pc['ALL_c'] = df_table1_pc.sum(axis=1)
+# df_table1_pc.loc['ALL_r',:] = df_table1_pc.sum(axis=0)
+# df_table1_pc = df_table1_pc[['AAA','AA','A','B','Junk','ALL_c']].round(4)*100
+# df_table1_pc.to_csv(f'../{final_output}/Table_1_panelC.csv', index=True, encoding='utf_8_sig')
 
-print(f"Table 1 run time: {round((time.time() - start), 2)} seconds \n")
+# print(f"Table 1 run time: {round((time.time() - start), 2)} seconds \n")
 
 ###########################################################
 ##### Figure A2: Softmax Ranking: a1 = 50, and a2 = 8 #####
@@ -914,151 +914,151 @@ print(f"Table 4 run time: {round((time.time() - start), 2)} seconds \n")
 
 
 
-#####################################################################
-##### Figure 4: Variable Importance: Average Absolute Gradients #####
-#####################################################################
+# #####################################################################
+# ##### Figure 4: Variable Importance: Average Absolute Gradients #####
+# #####################################################################
 
-start = time.time()
+# start = time.time()
 
-dict_char = {}
-for n_layer in range(1, max_layers+1):
-    this_params = df_best[(df_best['n_layer'] == n_layer)]
-    learning_rate = this_params['learning_rate'].values.tolist()[0]
-    dropout_rate = this_params['dropout_rate'].values.tolist()[0]
-    a1 = this_params['a1'].values.tolist()[0]
-    a2 = this_params['a2'].values.tolist()[0]
-    for n_deep_factors in range(1, 2):
+# dict_char = {}
+# for n_layer in range(1, max_layers+1):
+#     this_params = df_best[(df_best['n_layer'] == n_layer)]
+#     learning_rate = this_params['learning_rate'].values.tolist()[0]
+#     dropout_rate = this_params['dropout_rate'].values.tolist()[0]
+#     a1 = this_params['a1'].values.tolist()[0]
+#     a2 = this_params['a2'].values.tolist()[0]
+#     for n_deep_factors in range(1, 2):
 
-        file_name_uncond = '{}/dchars_lr{}_dr{}_a1{}_a2{}_L{}_D{}_seed{}.txt'.format(
-                output_dir, learning_rate, dropout_rate, a1, a2, n_layer, n_deep_factors, seed)
+#         file_name_uncond = '{}/dchars_lr{}_dr{}_a1{}_a2{}_L{}_D{}_seed{}.txt'.format(
+#                 output_dir, learning_rate, dropout_rate, a1, a2, n_layer, n_deep_factors, seed)
 
-        temp_fix = pd.read_table(file_name_uncond,sep='\\s+',header=None).values
+#         temp_fix = pd.read_table(file_name_uncond,sep='\\s+',header=None).values
 
-        key_name = '{}_{}'.format(n_layer,n_deep_factors)
+#         key_name = '{}_{}'.format(n_layer,n_deep_factors)
 
-        dict_char[key_name] = temp_fix[:T_ALL,:]
+#         dict_char[key_name] = temp_fix[:T_ALL,:]
 
-df_char_all_2 = pd.read_feather(f'../data/data_in_all_{update_date}/characteristics_impute_selected{panel_num}_with_Equity_{update_date}_xret.feather').set_index('trd_exctn_dt')
-df_frame = df_char_all_2.resample('M').mean()[list_char]*0
+# df_char_all_2 = pd.read_feather(f'../data/data_in_all_{update_date}/characteristics_impute_selected{panel_num}_with_Equity_{update_date}_xret.feather').set_index('trd_exctn_dt')
+# df_frame = df_char_all_2.resample('M').mean()[list_char]*0
 
-df_char_all_2 = df_char_all_2.loc[:oos_end,list_char]
-df_char_all_2 = df_char_all_2.values.reshape((T_ALL, panel_num, -1))
+# df_char_all_2 = df_char_all_2.loc[:oos_end,list_char]
+# df_char_all_2 = df_char_all_2.values.reshape((T_ALL, panel_num, -1))
 
-y = dict_char[list_uncond_best_capm[best_factor_choose-1]]
-x = df_char_all_2
+# y = dict_char[list_uncond_best_capm[best_factor_choose-1]]
+# x = df_char_all_2
 
-beta_array = np.zeros([x.shape[2],T_ALL])
-beta_char = np.zeros([T_ALL,panel_num,len(list_char)])
+# beta_array = np.zeros([x.shape[2],T_ALL])
+# beta_char = np.zeros([T_ALL,panel_num,len(list_char)])
 
-for i in range(0,T_ALL):
-    y_part = y[i]
-    x_part = x[i]
+# for i in range(0,T_ALL):
+#     y_part = y[i]
+#     x_part = x[i]
     
-    mod_ts = sm.OLS(y_part,x_part)
+#     mod_ts = sm.OLS(y_part,x_part)
     
-    res= mod_ts.fit()
-    beta_array[:,i] = res.params[:]
-    beta_char[i] = (x_part[i]*beta_array[:,i])
+#     res= mod_ts.fit()
+#     beta_array[:,i] = res.params[:]
+#     beta_char[i] = (x_part[i]*beta_array[:,i])
 
 
-var_betaxchar = np.zeros([T_ALL,len(list_char)])
-for i in range(0,T_ALL):
-    var_betaxchar[i] = np.var(beta_char[i],axis=0)
+# var_betaxchar = np.zeros([T_ALL,len(list_char)])
+# for i in range(0,T_ALL):
+#     var_betaxchar[i] = np.var(beta_char[i],axis=0)
 
-df_rename = pd.read_csv(f'../data/data_in_all_{update_date}/bond_char_list.csv',header=None)
-df_rename = df_rename.rename(columns={0:'before',1:'after'})
+# df_rename = pd.read_csv(f'../data/data_in_all_{update_date}/bond_char_list.csv',header=None)
+# df_rename = df_rename.rename(columns={0:'before',1:'after'})
 
-df_char_sum = pd.DataFrame(index= df_frame.columns)
+# df_char_sum = pd.DataFrame(index= df_frame.columns)
 
-df_char_sum['mean'] = np.mean(beta_array,axis=1)
-df_char_sum['std'] = np.std(beta_array,axis=1)
+# df_char_sum['mean'] = np.mean(beta_array,axis=1)
+# df_char_sum['std'] = np.std(beta_array,axis=1)
 
-for i,row in enumerate(df_char_sum.index):
-    newey_west_L = int(4*(T_ALL/100)**(2/9))
-    mod_ts = sm.OLS(beta_array[i], np.ones(T_ALL))
-    res= mod_ts.fit(cov_type='HAC',cov_kwds={'maxlags':newey_west_L})
-    df_char_sum.loc[row,'VI2'] = res.params[0]
-    df_char_sum.loc[row,'t_stat'] = res.tvalues[0]
-    df_char_sum.loc[row,'pvalue'] = res.pvalues[0]
-df_char_sum['percentage'] = np.abs(df_char_sum['mean'])/np.sum(np.abs(df_char_sum['mean']))*100
+# for i,row in enumerate(df_char_sum.index):
+#     newey_west_L = int(4*(T_ALL/100)**(2/9))
+#     mod_ts = sm.OLS(beta_array[i], np.ones(T_ALL))
+#     res= mod_ts.fit(cov_type='HAC',cov_kwds={'maxlags':newey_west_L})
+#     df_char_sum.loc[row,'VI2'] = res.params[0]
+#     df_char_sum.loc[row,'t_stat'] = res.tvalues[0]
+#     df_char_sum.loc[row,'pvalue'] = res.pvalues[0]
+# df_char_sum['percentage'] = np.abs(df_char_sum['mean'])/np.sum(np.abs(df_char_sum['mean']))*100
 
     
-for row in df_char_sum.index:
-    if row in df_rename['before'].values:
-        df_char_sum.loc[row,'newchar'] = df_rename[df_rename['before']==row]['after'].values[0]
-    else:
-        df_char_sum.loc[row,'newchar'] = row.upper()
+# for row in df_char_sum.index:
+#     if row in df_rename['before'].values:
+#         df_char_sum.loc[row,'newchar'] = df_rename[df_rename['before']==row]['after'].values[0]
+#     else:
+#         df_char_sum.loc[row,'newchar'] = row.upper()
 
-    if df_char_sum.loc[row,'pvalue']<0.01:
-        df_char_sum.loc[row,'newchar'] += '***'
-    elif df_char_sum.loc[row,'pvalue']<0.05:
-        df_char_sum.loc[row,'newchar'] += '**'
-    elif df_char_sum.loc[row,'pvalue']<0.1:
-        df_char_sum.loc[row,'newchar'] += '*'
+#     if df_char_sum.loc[row,'pvalue']<0.01:
+#         df_char_sum.loc[row,'newchar'] += '***'
+#     elif df_char_sum.loc[row,'pvalue']<0.05:
+#         df_char_sum.loc[row,'newchar'] += '**'
+#     elif df_char_sum.loc[row,'pvalue']<0.1:
+#         df_char_sum.loc[row,'newchar'] += '*'
         
-    if row in list_bond:
-        df_char_sum.loc[row,'category'] = 'Bond'
-    elif row in list_equity:
-        df_char_sum.loc[row,'category'] = 'Equity'
-    else:
-        df_char_sum.loc[row,'category'] = 'Option'
+#     if row in list_bond:
+#         df_char_sum.loc[row,'category'] = 'Bond'
+#     elif row in list_equity:
+#         df_char_sum.loc[row,'category'] = 'Equity'
+#     else:
+#         df_char_sum.loc[row,'category'] = 'Option'
 
-df_char_sum['VI'] = np.mean((var_betaxchar/np.var(y,axis=1).reshape(-1,1)),axis=0)
-df_char_sum['VI'] = df_char_sum['VI']/df_char_sum['VI'].sum()
-df_char_sum[['Bond','Equity','Option']]=np.nan
-for row in df_char_sum.index:
-    if df_char_sum.loc[row,'category'] == 'Bond':
-        df_char_sum.loc[row,'Bond'] = df_char_sum.loc[row,'VI2']
-    elif df_char_sum.loc[row,'category'] == 'Equity':
-        df_char_sum.loc[row,'Equity'] = df_char_sum.loc[row,'VI2']
-    else:
-        df_char_sum.loc[row,'Option'] = df_char_sum.loc[row,'VI2']
+# df_char_sum['VI'] = np.mean((var_betaxchar/np.var(y,axis=1).reshape(-1,1)),axis=0)
+# df_char_sum['VI'] = df_char_sum['VI']/df_char_sum['VI'].sum()
+# df_char_sum[['Bond','Equity','Option']]=np.nan
+# for row in df_char_sum.index:
+#     if df_char_sum.loc[row,'category'] == 'Bond':
+#         df_char_sum.loc[row,'Bond'] = df_char_sum.loc[row,'VI2']
+#     elif df_char_sum.loc[row,'category'] == 'Equity':
+#         df_char_sum.loc[row,'Equity'] = df_char_sum.loc[row,'VI2']
+#     else:
+#         df_char_sum.loc[row,'Option'] = df_char_sum.loc[row,'VI2']
         
-i=1
-num_char = len(list_char)
-list_layer = [num_char//2,num_char//4,num_char//8,num_char//16]
+# i=1
+# num_char = len(list_char)
+# list_layer = [num_char//2,num_char//4,num_char//8,num_char//16]
 
-this_params = df_best[(df_best['n_layer'] == n_layer)]
-learning_rate = this_params['learning_rate'].values.tolist()[0]
-dropout_rate = this_params['dropout_rate'].values.tolist()[0]
-a1 = this_params['a1'].values.tolist()[0]
-a2 = this_params['a2'].values.tolist()[0]
+# this_params = df_best[(df_best['n_layer'] == n_layer)]
+# learning_rate = this_params['learning_rate'].values.tolist()[0]
+# dropout_rate = this_params['dropout_rate'].values.tolist()[0]
+# a1 = this_params['a1'].values.tolist()[0]
+# a2 = this_params['a2'].values.tolist()[0]
 
-input_layer = list_layer[:1].copy()
+# input_layer = list_layer[:1].copy()
 
-df_temp = pd.concat([pd.read_csv('{}/grad_lr{}_dr{}_a1{}_a2{}_L{}_D{}_seed{}.txt'.format(
-            output_dir, learning_rate, dropout_rate, a1, a2, n_layer, n_deep_factors, seed)).iloc[[-1],1:] for j,(index_date,row) in enumerate(df_rf_all.iloc[T_INS:T_ALL].iterrows())]).abs().mean()
-df_char = df_temp.div(df_temp.sum()).sort_values(ascending=False).to_frame('VI')
+# df_temp = pd.concat([pd.read_csv('{}/grad_lr{}_dr{}_a1{}_a2{}_L{}_D{}_seed{}.txt'.format(
+#             output_dir, learning_rate, dropout_rate, a1, a2, n_layer, n_deep_factors, seed)).iloc[[-1],1:] for j,(index_date,row) in enumerate(df_rf_all.iloc[T_INS:T_ALL].iterrows())]).abs().mean()
+# df_char = df_temp.div(df_temp.sum()).sort_values(ascending=False).to_frame('VI')
 
-df_char_sum['newchar'] =  df_char_sum['newchar'].str.replace(r'\*+', '', regex=True)
+# df_char_sum['newchar'] =  df_char_sum['newchar'].str.replace(r'\*+', '', regex=True)
 
-df_char = df_char.merge(df_char_sum[['category','Bond',	'Equity','Option','newchar']],left_index=True,right_index=True)
+# df_char = df_char.merge(df_char_sum[['category','Bond',	'Equity','Option','newchar']],left_index=True,right_index=True)
 
-import seaborn as sns
+# import seaborn as sns
 
-top_display = len(df_char)
-custom_palette = sns.color_palette('Set3',10)
+# top_display = len(df_char)
+# custom_palette = sns.color_palette('Set3',10)
 
-df_char_top50 = df_char.iloc[:top_display]
+# df_char_top50 = df_char.iloc[:top_display]
 
-bar_colors = {'Bond': custom_palette[4], 'Equity': custom_palette[3],'Option':custom_palette[1]}
+# bar_colors = {'Bond': custom_palette[4], 'Equity': custom_palette[3],'Option':custom_palette[1]}
 
-fig,ax = plt.subplots(figsize=(80,180))
-sns.barplot(data =df_char_top50, y='newchar',x='VI',hue='category',hue_order=['Bond','Equity','Option'],dodge=False,palette=[custom_palette[4],custom_palette[1],custom_palette[3]])
+# fig,ax = plt.subplots(figsize=(80,180))
+# sns.barplot(data =df_char_top50, y='newchar',x='VI',hue='category',hue_order=['Bond','Equity','Option'],dodge=False,palette=[custom_palette[4],custom_palette[1],custom_palette[3]])
 
-ax.tick_params(labelsize=72,length=0)
-plt.box(False)
-ax.xaxis.grid(linewidth=1,color='black')
-ax.xaxis.tick_top()
-ax.set_xlabel('')
+# ax.tick_params(labelsize=72,length=0)
+# plt.box(False)
+# ax.xaxis.grid(linewidth=1,color='black')
+# ax.xaxis.tick_top()
+# ax.set_xlabel('')
 
-plt.legend(fontsize='96', title_fontsize='96',loc=4)
+# plt.legend(fontsize='96', title_fontsize='96',loc=4)
 
-plt.savefig(f'../{final_output}/Figure_4.pdf', dpi=100, bbox_inches = 'tight')
-plt.show()
-plt.close()
+# plt.savefig(f'../{final_output}/Figure_4.pdf', dpi=100, bbox_inches = 'tight')
+# plt.show()
+# plt.close()
 
-print(f"Figure 4 run time: {round((time.time() - start), 2)} seconds \n")
+# print(f"Figure 4 run time: {round((time.time() - start), 2)} seconds \n")
 
 
 
